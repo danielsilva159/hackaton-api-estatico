@@ -1,5 +1,5 @@
-angular.module("hackaton-stefanini").controller("PessoaIncluirAlterarController", PessoaIncluirAlterarController);
-PessoaIncluirAlterarController.$inject = [
+angular.module("hackaton-stefanini").controller("EnderecoIncluirAlterarController", EnderecoIncluirAlterarController);
+EnderecoIncluirAlterarController.$inject = [
     "$rootScope",
     "$scope",
     "$location",
@@ -8,7 +8,7 @@ PessoaIncluirAlterarController.$inject = [
     "$routeParams",
     "HackatonStefaniniService"];
 
-function PessoaIncluirAlterarController(
+function EnderecoIncluirAlterarController(
     $rootScope,
     $scope,
     $location,
@@ -19,16 +19,6 @@ function PessoaIncluirAlterarController(
 
     /**ATRIBUTOS DA TELA */
     vm = this;
-
-    vm.pessoa = {
-        id: null,
-        nome: "",
-        email: "",
-        dataNascimento: null,
-        enderecos: [],
-        perfils: [],
-        situacao: false
-    };
     vm.enderecoDefault = {
         id: null,
         idPessoa: null,
@@ -41,39 +31,36 @@ function PessoaIncluirAlterarController(
     };
 
     vm.urlEndereco = "http://localhost:8080/treinamento/api/enderecos/";
-    vm.urlPerfil = "http://localhost:8080/treinamento/api/perfils/";
     vm.urlPessoa = "http://localhost:8080/treinamento/api/pessoas/";
 
     /**METODOS DE INICIALIZACAO */
     vm.init = function () {
 
-        vm.tituloTela = "Cadastrar Pessoa";
-        vm.acao = "Cadastrar";
+        vm.tituloTelaEndereco = "Cadastrar Endereço";
+        vm.acao = "Cadastrar Endereco";
 
-
-        /**Recuperar a lista de perfil */
-        vm.listar(vm.urlPerfil).then(
+        vm.listar(vm.urlEndereco).then(
             function (response) {
                 if (response !== undefined) {
-                    vm.listaPerfil = response;
-                    if ($routeParams.idPessoa) {
-                        vm.tituloTela = "Editar Pessoa";
-                        vm.acao = "Editar";
-
-                        vm.recuperarObjetoPorIDURL($routeParams.idPessoa, vm.urlPessoa).then(
-                            function (pessoaRetorno) {
-                                if (pessoaRetorno !== undefined) {
-                                    vm.pessoa = pessoaRetorno;
-                                    vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
-                                    vm.perfil = vm.pessoa.perfils[0];
+                    vm.listaEndereco = response;
+                        if ($routeParams.idEndereco) {
+                        vm.tituloTelaEndereco = "Editar Endereco";
+                        vm.acao = "Editar Endereco";
+                        vm.recuperarObjetoPorIDURL($routeParams.idEndereco, vm.urlEndereco).then(
+                            function(enderecoRetorno){
+                                if(enderecoRetorno.id!== null){
+                                    vm.endereco = enderecoRetorno;
+                                }else{
+                                    enderecoRetorno.idPessoa = $routeParams.idEndereco;
+                                    vm.endereco = enderecoRetorno;
                                 }
-                            }
+                            }  
                         );
                     }
-                }
+                }        
             }
         );
-    };
+    }
 
     /**METODOS DE TELA */
     vm.cancelar = function () {
@@ -81,29 +68,7 @@ function PessoaIncluirAlterarController(
     };
 
     vm.retornarTelaListagem = function () {
-        $location.path("EditarPessoas/"+pessoa.id);
-    };
-
-    vm.abrirModal = function (endereco) {
-            if($routeParams.idPessoa){
-                if(endereco.idPessoa){
-                    $location.path("EditarEndereco/"+endereco.id);
-                }else{
-                    $location.path("EditarEndereco/"+endereco.id);
-                }
-                
-            }else{
-                $location.path("cadastrarEndereco")
-            }
-        
-        // vm.enderecoModal = vm.enderecoDefault;
-        // if (endereco !== undefined)
-        //     vm.enderecoModal = endereco;
-
-        // if (vm.pessoa.enderecos.length === 0)
-        //     vm.pessoa.enderecos.push(vm.enderecoModal);
-
-        //$("#modalEndereco").modal();
+        $location.path("EditarPessoas/"+vm.endereco.idPessoa);
     };
 
     vm.limparTela = function () {
@@ -111,41 +76,18 @@ function PessoaIncluirAlterarController(
         vm.endereco = undefined;
     };
 
-    vm.incluir = function () {
-        vm.pessoa.dataNascimento = vm.formataDataJava(vm.pessoa.dataNascimento);
+    vm.incluir = function (endereco) {
 
-        var objetoDados = angular.copy(vm.pessoa);
-        var listaEndereco = [];
-        angular.forEach(objetoDados.enderecos, function (value, key) {
-            if (value.complemento.length > 0) {
-                value.idPessoa = objetoDados.id;
-                listaEndereco.push(angular.copy(value));
-            }
-        });
+        var objetoDados = angular.copy(endereco);
+        if (vm.acao == "Cadastrar Endereco") {
 
-        objetoDados.enderecos = listaEndereco;
-        if (vm.perfil !== null){
-
-            var isNovoPerfil = true;
-            
-            angular.forEach(objetoDados.perfils, function (value, key) {
-                if (value.id === vm.perfil.id) {
-                    isNovoPerfil = false;
-                }
-            });
-            if (isNovoPerfil)
-                objetoDados.perfils.push(vm.perfil);
-        }
-        if (vm.acao == "Cadastrar") {
-
-            vm.salvar(vm.urlPessoa, objetoDados).then(
+            vm.salvar(vm.urlEndereco, objetoDados).then(
                 function (pessoaRetorno) {
                     vm.retornarTelaListagem();
                 });
-        } else if (vm.acao == "Editar") {
-            vm.alterar(vm.urlPessoa, objetoDados).then(
+        } else if (vm.acao == "Editar Endereco") {
+            vm.alterar(vm.urlEndereco, objetoDados).then(
                 function (pessoaRetorno) {
-                    alert("Perfil Alterado com sucesso");
                     vm.retornarTelaListagem();
                 });
         }
@@ -232,22 +174,6 @@ function PessoaIncluirAlterarController(
         return deferred.promise;
     }
 
-    /**METODOS AUXILIARES */
-    vm.formataDataJava = function (data) {
-        var dia = data.slice(0, 2);
-        var mes = data.slice(2, 4);
-        var ano = data.slice(4, 8);
-
-        return ano + "-" + mes + "-" + dia;
-    };
-
-    vm.formataDataTela = function (data) {
-        var ano = data.slice(0, 4);
-        var mes = data.slice(5, 7);
-        var dia = data.slice(8, 10);
-
-        return dia + mes + ano;
-    };
 
     vm.listaUF = [
         { "id": "RO", "desc": "RO" },

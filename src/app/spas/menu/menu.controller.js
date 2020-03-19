@@ -29,6 +29,10 @@ function MenuController($rootScope, $scope, $location,
                 $location.path("listarPerfis");
                 break;
 
+            case 'cadastrarPerfis':
+                $location.path("cadastrarPerfis");
+                break;
+
             case 'home':
                 $location.path("/");
                 break;

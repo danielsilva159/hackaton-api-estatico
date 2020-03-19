@@ -20,70 +20,90 @@
   >
     <form>
       <div class="mx-auto" style="width: 200px;">
-        <h5 class="modal-title">{{vm.tituloTela}}</h5>
+        <h5 class="modal-title">{{vm.tituloTelaEndereco}}</h5>
       </div>
       <div class="form-group">
-        <label for="nomePessoa">Nome: </label>
+        <label for="enderecoPessoa">Logradouro: </label>
         <input
           type="nome"
           class="form-control"
-          id="nomePessoa"
-          ng-model="vm.pessoa.nome"
-          placeholder="Digite o nome da pessoa ..."
+          id="enderecoPessoa"
+          ng-model="vm.endereco.logradouro"
+          placeholder="Digite o endereço ..."
         />
       </div>
       <div class="form-group">
-        <label for="emailPessoa">Email</label>
+        <label for="complementoPessoa">Complemento</label>
         <input
           type="text"
           class="form-control"
-          id="emailPessoa"
-          ng-model="vm.pessoa.email"
-          placeholder="name@example.com"
+          id="complementoPessoa"
+          ng-model="vm.endereco.complemento"
+          placeholder="Complemento..."
         />
       </div>
       <div class="row">
         <div class="form-group">
-          <label for="nascimentoPessoa" style="width: 250px;"
-            >Data de nascimento</label
-          >
-          <input
+          <label for="ufPessoa" style="width: 100px;"
+            >UF</label>
+         
+            <select
+              style="width: 150px; height: 38px; margin-right: 10px;"
+              class="form-control"
+              ng-options="item as item.id for item in vm.listaUF track by  vm.endereco.uf "
+              ng-model=" vm.endereco.uf"
+              id="ufPessoa">
+                <option value="" selected>-- UF --</option>
+            </select>
+          </div>
+            <div class="form-group">
+              <label for="cidadePessoa">Cidade</label>
+              <input
+                style="width: 250px; height: 38px;"
+                type="text"
+                class="form-control"
+                id="cidadePessoa"
+                ng-model="vm.endereco.localidade"
+                placeholder="Cidade..."
+              />
+          </div>
+        </div>
+          <div class="form-group">
+            <label for="cepPessoa">CEP</label>
+            <input
             type="text"
             class="form-control"
-            id="nascimentoPessoa"
-            ng-model="vm.pessoa.dataNascimento"
-            ui-mask="99/99/9999"
+            id="cepPessoa"
+            ng-model="vm.endereco.cep"
+            ui-mask="99.999-999"
             style="width: 120px;"
           />
-        </div>
+          </div>
+          <div class="form-group">
+            <label for="bairroPessoa">Bairro</label>
+            <input
+              type="text"
+              class="form-control"
+              id="bairroPessoa"
+              ng-model="vm.endereco.bairro"
+              placeholder="Bairro..."
+            />
+          </div>
+        
         <!-- <div class="form-group">
           <label for="nomePerfil">Perfil</label>
           <div>
             <select
               style="width: 250px; height: 38px;"
-              ng-class="{'disabledDiv': vm.listaPerfil.length === 0, 'custom-select custom-select-sm': true}"
-              ng-options="item as item.nome for item in vm.listaPerfil track by item.idPessoa"
-              ng-model="vm.perfil"
+              ng-model="vm.perfil.id"
+              ng-options="item as item.nome for item in vm.listaPerfil  track by item.id" 
             >
               <option value="">-- PERFIL --</option>
             </select>
           </div>
-        </div> -->
-      </div>
-
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          ng-checked="vm.pessoa.situacao"
-          ng-click="vm.pessoa.situacao = !vm.pessoa.situacao"
-          type="checkbox"
-          id="defaultCheck1"
-        />
-        <label class="form-check-label" for="defaultCheck1">
-          Situação
-        </label>
-      </div>
-      <div ng-if="vm.pessoa.id!==null">
+        </div>  -->
+      
+      <!-- <div>
         <div style="text-align: right;">
           <img
             src="../../../app/imagens/bootstrap-icons/icons/document-richtext.svg"
@@ -92,7 +112,7 @@
             width="25"
             height="25"
             title="Incluir Endereço"
-            ng-click="vm.abrirModal(vm.pessoa)"
+            ng-click="vm.abrirModal()"
           />
         </div>
         <table class="table table-hover">
@@ -138,7 +158,7 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> -->
     </form>
   </div>
   <div
@@ -148,7 +168,7 @@
     <button
       type="button"
       class="btn btn-primary btn-space"
-      ng-click="vm.incluir(vm.pessoa)"
+      ng-click="vm.incluir(vm.endereco)"
     >
       Salvar
     </button>
@@ -157,15 +177,15 @@
     </button>
   </div>
 
-  <div
+  <!-- <div
     class="modal fade"
     id="modalEndereco"
     role="dialog"
     data-backdrop="false"
   >
     <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
+      Modal content-->
+      <!-- <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
             &times;
@@ -173,10 +193,27 @@
         </div>
         <div class="modal-body">
           <div
-            ng-include=" ' app/spas/endereco/template/endereco-incluir-alterar.tpl.html ' "
+            ng-include="app/spas/endereco/template/endereco-incluir-alterar.tpl.html"
           ></div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary btn-space"
+            data-dismiss="modal"
+          >
+            Salvar
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            ng-click="vm.limparTela()"
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </div> --> 
 </div>

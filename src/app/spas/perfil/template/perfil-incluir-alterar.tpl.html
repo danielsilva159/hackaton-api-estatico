@@ -1,0 +1,91 @@
+<style>
+  .btn-space {
+    margin-right: 10px;
+  }
+
+  myModal {
+    z-index: 2147483647;
+  }
+
+  .disabledDiv {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+</style>
+
+<div ng-init="vm.init()">
+  <div
+    class="container"
+    style="overflow-y: auto; overflow-x: hidden; height: 425px"
+  >
+    <form>
+      <div class="mx-auto" style="width: 200px;">
+        <h5 class="modal-title">{{vm.tituloTela}}</h5>
+      </div>
+      <div class="form-group">
+        <label for="nomePerfil">Nome: </label>
+        <input
+          type="nome"
+          class="form-control"
+          id="descricaoPerfil"
+          ng-model="vm.perfil.nome"
+          placeholder="Digite o nome do perfil ..."
+         
+        />
+      </div>
+      <div class="form-group" >
+        <label for="descricaoPerfil">Perfil</label>
+        <div >
+          <input
+          type="nome"
+          class="form-control"
+          id="descricaoPerfil"
+          ng-model="vm.perfil.descricao"
+          placeholder="Digite o nome do perfil ..."
+         
+        />
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label for="dataInclusao" style="width: 250px;">Data de Inclusão</label>
+          <input
+            type="text"
+            class="form-control"
+            id="dataInclusao"
+            ng-model="vm.perfil.dataHoraInclusao"
+            ui-mask="99/99/9999"
+            style="width: 120px;"
+          />
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="dataAlteracao" style="width: 250px;">Data de Alteração</label>
+            <input
+              type="text"
+              class="form-control"
+              id="dataAlteracao"
+              ng-model="vm.perfil.dataHoraAlteracao"
+              ui-mask="99/99/9999"
+              style="width: 120px;"
+            />
+          </div>
+        </div>
+    </form>
+  </div>
+  <div
+    class="row"
+    style="float: right; padding-top: 30px; padding-right: 20px;"
+  >
+    <button
+      type="button"
+      class="btn btn-primary btn-space"
+      ng-click="vm.incluir(vm.perfil)"
+    >
+      Salvar
+    </button>
+    <button type="button" class="btn btn-danger" ng-click="vm.cancelar()">
+      Cancelar
+    </button>
+  </div>
+</div>

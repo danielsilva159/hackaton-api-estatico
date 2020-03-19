@@ -7,22 +7,39 @@
 
 <div ng-init="vm.init()" style="overflow-y: auto; overflow-x: hidden; ">
   <div class="container">
-   
+    <div
+      ng-class="{'disabledDiv': vm.endereco !== undefined}"
+      style="text-align: right;"
+    >
+      <img
+        src="../../../app/imagens/bootstrap-icons/icons/document-richtext.svg"
+        style="cursor: pointer;"
+        alt=""
+        width="25"
+        height="25"
+        title="Incluir Pessoa"
+        ng-click="vm.editar()"
+      />
+    </div>
     <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">Id</th>
           <th scope="col">Nome</th>
-          <th scope="col">E-mail</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Data de inclusão</th>
+          <th scope="col">Data de Alteração</th>
           <th scope="col">Editar</th>
           <th scope="col">Excluir</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="pessoa in vm.listaPessoasMostrar">
-          <td>{{pessoa.id}}</td>
-          <td>{{pessoa.nome}}</td>
-          <td>{{pessoa.email}}</td>
+        <tr ng-repeat="perfil in vm.listaPerfis">
+          <td>{{perfil.id}}</td>
+          <td>{{perfil.nome}}</td>
+          <td>{{perfil.descricao}}</td>
+          <td>{{vm.formataDataTela(perfil.dataHoraInclusao)}}</td>
+          <td>{{perfil.dataHoraAlteracao  ? vm.formataDataTela(perfil.dataHoraAlteracao) : " - " }}</td>
           <td>
             <img
               src="../../../app/imagens/bootstrap-icons/icons/pencil.svg"
@@ -31,7 +48,7 @@
               width="25"
               height="25"
               title="Editar"
-              ng-click="vm.editar(pessoa.id)"
+              ng-click="vm.editar(perfil.id)"
             />
           </td>
 
@@ -43,7 +60,8 @@
               width="25"
               height="25"
               title="Excluir"
-              ng-click="vm.remover(pessoa.id)"
+              ng-click="vm.remover(perfil.id)"
+              ng-confirm-click="Deseja excluir o perfil.nome"
             />
           </td>
         </tr>

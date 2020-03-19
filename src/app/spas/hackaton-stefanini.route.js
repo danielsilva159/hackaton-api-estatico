@@ -22,6 +22,32 @@
                 templateUrl: 'app/spas/pessoas/template/pessoa-incluir-alterar.tpl.html',
                 controller: 'PessoaIncluirAlterarController as vm'
             })
+
+            //Rota Para Perfil
+            .when('/listarPerfis', {
+                templateUrl: 'app/spas/perfil/template/perfil-listar.tpl.html',
+                controller: 'PerfilListarController as vm'
+            })
+            .when('/EditarPerfis/:idPerfil', {
+                templateUrl: 'app/spas/perfil/template/perfil-incluir-alterar.tpl.html',
+                controller: 'PerfilIncluirAlterarController as vm'
+            })
+            .when('/cadastrarPerfis', {
+                templateUrl: 'app/spas/perfil/template/perfil-incluir-alterar.tpl.html',
+                controller: 'PerfilIncluirAlterarController as vm'
+            })
+
+            // Rota para Endereço
+
+            .when('/cadastrarEndereco', {
+                templateUrl: 'app/spas/endereco/template/endereco-incluir-alterar.tpl.html',
+                controller: 'EnderecoIncluirAlterarController as vm'
+            })
+            .when('/EditarEndereco/:idEndereco', {
+                templateUrl: 'app/spas/endereco/template/endereco-incluir-alterar.tpl.html',
+                controller: 'EnderecoIncluirAlterarController as vm'
+            })
+           
             
             .otherwise({
                 templateUrl: 'index_ERROR.html'
