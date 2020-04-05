@@ -20,13 +20,13 @@ function PerfilIncluirAlterarController(
     /**ATRIBUTOS DA TELA */
     vm = this;
 
-    // vm.perfil = {
-    //     id: null,
-    //     nome: "",
-    //     descricao: "",
-    //     dataHoraInclusao : "", 
-    //     dataHoraAlteracao: ""
-    // };
+    vm.perfil = {
+         id: null,
+         nome: "",
+         descricao: "",
+         dataHoraInclusao : "", 
+         dataHoraAlteracao: ""
+     };
    
 
     vm.urlPerfil = "http://localhost:8080/treinamento/api/perfils/";
@@ -37,7 +37,7 @@ function PerfilIncluirAlterarController(
 
         vm.tituloTela = "Cadastrar Perfil";
         vm.acao = "Cadastrar";
-
+        console.log(vm.perfil);
 
         /**Recuperar a lista de perfil */
         vm.listar(vm.urlPerfil).then(
@@ -105,13 +105,17 @@ function PerfilIncluirAlterarController(
         //     if (isNovoPerfil)
         //         objetoDados.perfils.push(vm.perfil);
         // }
+        var data = vm.dataAtualFormatada();
         if (vm.acao == "Cadastrar") {
-            objetoDados.dataHoraInclusao = vm.formataDataJava(objetoDados.dataHoraInclusao);
+            objetoDados.dataHoraInclusao = data;
+            objetoDados.dataHoraAlteracao = data;
             vm.salvar(vm.urlPerfil, objetoDados).then(
                 function (perfilRetorno) {
                     vm.retornarTelaListagem();
                 });
         } else if (vm.acao == "Editar") {
+            objetoDados.dataHoraInclusao = vm.formataDataJava(objetoDados.dataHoraInclusao);
+            objetoDados.dataHoraAlteracao = data;
             vm.alterar(vm.urlPerfil, objetoDados).then(
                 function (perfilRetorno) {
                     vm.retornarTelaListagem();
@@ -205,7 +209,7 @@ function PerfilIncluirAlterarController(
         var mes = data.slice(2, 4);
         var ano = data.slice(4, 8);
 
-        return ano + "-" + mes + "-" + dia;
+        return ano + "-" + mes + "-" + dia+"T00:00:00";
     };
 
     vm.formataDataTela = function (data) {
@@ -215,6 +219,26 @@ function PerfilIncluirAlterarController(
 
         return dia + mes + ano;
     };
+    vm.dataAtualFormatada = function (){
+        var data = new Date(),
+            dia  = data.getDate().toString(),
+            diaF = (dia.length == 1) ? '0'+dia : dia,
+            mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+            mesF = (mes.length == 1) ? '0'+mes : mes,
+            anoF = data.getFullYear();
+        return anoF+"-"+mesF+"-"+diaF+"T00:00:00";
+    }
+
+    vm.remover = function (id) {
+
+        var liberaExclusao = window.confirm("Deseja excluir esse perfil?");
+        if (liberaExclusao)
+            HackatonStefaniniService.excluir(vm.urlPerfil + id).then(
+                function (response) {
+                        vm.init();
+                      }
+            );
+    }
 
    
 

@@ -29,6 +29,7 @@ function PessoaIncluirAlterarController(
         perfils: [],
         situacao: false
     };
+    
     vm.enderecoDefault = {
         id: null,
         idPessoa: null,
@@ -41,6 +42,7 @@ function PessoaIncluirAlterarController(
     };
 
     vm.urlEndereco = "http://localhost:8080/treinamento/api/enderecos/";
+    vm.urlEnderecoPessoa = "http://localhost:8080/treinamento/api/enderecos/pessoa/";
     vm.urlPerfil = "http://localhost:8080/treinamento/api/perfils/";
     vm.urlPessoa = "http://localhost:8080/treinamento/api/pessoas/";
 
@@ -54,6 +56,7 @@ function PessoaIncluirAlterarController(
         /**Recuperar a lista de perfil */
         vm.listar(vm.urlPerfil).then(
             function (response) {
+                console.log('escop->'+$scope.$location);
                 if (response !== undefined) {
                     vm.listaPerfil = response;
                     if ($routeParams.idPessoa) {
@@ -65,7 +68,10 @@ function PessoaIncluirAlterarController(
                                 if (pessoaRetorno !== undefined) {
                                     vm.pessoa = pessoaRetorno;
                                     vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
-                                    vm.perfil = vm.pessoa.perfils[0];
+                                    vm.pessoa.enderecos = vm.consultaEnderecos(pessoaRetorno.id);
+                                    vm.perfil = vm.pessoa.perfil;
+                                    alert(vm.perfil);
+                                   
                                 }
                             }
                         );
@@ -77,19 +83,27 @@ function PessoaIncluirAlterarController(
 
     /**METODOS DE TELA */
     vm.cancelar = function () {
-        vm.retornarTelaListagem();
+        $location.path("listarPessoas")
     };
 
     vm.retornarTelaListagem = function () {
+       if(pessoa.id){
+        vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
         $location.path("EditarPessoas/"+pessoa.id);
+       }else{
+        $location.path("EditarPessoas/");
+       }
+        
     };
 
     vm.abrirModal = function (endereco) {
             if($routeParams.idPessoa){
                 if(endereco.idPessoa){
+                    //alterando endereço
                     $location.path("EditarEndereco/"+endereco.id);
                 }else{
-                    $location.path("EditarEndereco/"+endereco.id);
+                    //Criando um novo endereço
+                    $location.path("cadastrarEndereco/"+endereco.id);
                 }
                 
             }else{
@@ -112,6 +126,7 @@ function PessoaIncluirAlterarController(
     };
 
     vm.incluir = function () {
+        console.log(vm.pessoa.dataNascimento);
         vm.pessoa.dataNascimento = vm.formataDataJava(vm.pessoa.dataNascimento);
 
         var objetoDados = angular.copy(vm.pessoa);
@@ -134,10 +149,11 @@ function PessoaIncluirAlterarController(
                 }
             });
             if (isNovoPerfil)
-                objetoDados.perfils.push(vm.perfil);
+            objetoDados.perfils.push(vm.idperfil);
         }
+        console.log(objetoDados);
         if (vm.acao == "Cadastrar") {
-
+            //objetoDados.perfils.push(objetoDados.perfil);
             vm.salvar(vm.urlPessoa, objetoDados).then(
                 function (pessoaRetorno) {
                     vm.retornarTelaListagem();
@@ -156,11 +172,13 @@ function PessoaIncluirAlterarController(
         var url = vm.urlPessoa + objeto.id;
         if (tipo === "ENDERECO")
             url = vm.urlEndereco + objeto.id;
-
+        var r = confirm("Você deseja excluir esse endereco ?");
+        if(r == true){
         vm.excluir(url).then(
             function (ojetoRetorno) {
-                vm.retornarTelaListagem();
+                location.reload(); 
             });
+        }
     };
 
     /**METODOS DE SERVICO */
@@ -238,7 +256,7 @@ function PessoaIncluirAlterarController(
         var mes = data.slice(2, 4);
         var ano = data.slice(4, 8);
 
-        return ano + "-" + mes + "-" + dia;
+        return ano + "-" + mes + "-" + dia+"T00:00:00";
     };
 
     vm.formataDataTela = function (data) {
@@ -249,34 +267,22 @@ function PessoaIncluirAlterarController(
         return dia + mes + ano;
     };
 
-    vm.listaUF = [
-        { "id": "RO", "desc": "RO" },
-        { "id": "AC", "desc": "AC" },
-        { "id": "AM", "desc": "AM" },
-        { "id": "RR", "desc": "RR" },
-        { "id": "PA", "desc": "PA" },
-        { "id": "AP", "desc": "AP" },
-        { "id": "TO", "desc": "TO" },
-        { "id": "MA", "desc": "MA" },
-        { "id": "PI", "desc": "PI" },
-        { "id": "CE", "desc": "CE" },
-        { "id": "RN", "desc": "RN" },
-        { "id": "PB", "desc": "PB" },
-        { "id": "PE", "desc": "PE" },
-        { "id": "AL", "desc": "AL" },
-        { "id": "SE", "desc": "SE" },
-        { "id": "BA", "desc": "BA" },
-        { "id": "MG", "desc": "MG" },
-        { "id": "ES", "desc": "ES" },
-        { "id": "RJ", "desc": "RJ" },
-        { "id": "SP", "desc": "SP" },
-        { "id": "PR", "desc": "PR" },
-        { "id": "SC", "desc": "SC" },
-        { "id": "RS", "desc": "RS" },
-        { "id": "MS", "desc": "MS" },
-        { "id": "MT", "desc": "MT" },
-        { "id": "GO", "desc": "GO" },
-        { "id": "DF", "desc": "DF" }
-    ];
+    vm.consultaEnderecos = function(idPessoa){
+        vm.recuperarObjetoPorIDURL(idPessoa, vm.urlEnderecoPessoa).then(
+            function (response) {
+                if (response !== undefined){
+                    vm.pessoa.enderecos = response;
+                }
+            });
+    }
+   function incluirPerfil(perfilPessoa){
+        console.log(perfilPessoa);
+   }
+    vm.imagemPessoa = function(imagem){
+      
+            console.log(imagem);
+        
+    }
+
 
 }

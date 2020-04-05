@@ -46,7 +46,7 @@
         />
         </div>
       </div>
-      <div class="row">
+      <div class="row"ng-if="vm.perfil.id !== null">
         <div class="form-group">
           <label for="dataInclusao" style="width: 250px;">Data de Inclusão</label>
           <input
@@ -56,11 +56,12 @@
             ng-model="vm.perfil.dataHoraInclusao"
             ui-mask="99/99/9999"
             style="width: 120px;"
+            disabled =""
           />
         </div>
         <div class="row">
           <div class="form-group">
-            <label for="dataAlteracao" style="width: 250px;">Data de Alteração</label>
+            <label for="dataAlteracao" style="width: 250px;">Data da ultima alteração</label>
             <input
               type="text"
               class="form-control"
@@ -68,9 +69,11 @@
               ng-model="vm.perfil.dataHoraAlteracao"
               ui-mask="99/99/9999"
               style="width: 120px;"
+              disabled =""
             />
           </div>
         </div>
+      </div>
     </form>
   </div>
   <div

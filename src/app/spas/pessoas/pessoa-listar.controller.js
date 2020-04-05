@@ -18,6 +18,7 @@ function PessoaListarController($rootScope, $scope, $location,
             function (responsePessoas) {
                 if (responsePessoas.data !== undefined)
                     vm.listaPessoas = responsePessoas.data;
+                    
 
                 vm.listaPessoasMostrar = [];
                 var max = vm.listaPessoas.length > vm.qdePorPagina ? vm.qdePorPagina : vm.listaPessoas.length;
@@ -103,8 +104,8 @@ function PessoaListarController($rootScope, $scope, $location,
         if (liberaExclusao)
             HackatonStefaniniService.excluir(vm.url + id).then(
                 function (response) {
-                    vm.init();
-                }
+                        vm.init();
+                      }
             );
         else {
             alert("Pessoa com Endereço vinculado, exclusão não permitida");

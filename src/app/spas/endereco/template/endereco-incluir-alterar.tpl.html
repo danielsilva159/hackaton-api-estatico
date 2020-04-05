@@ -19,9 +19,22 @@
     style="overflow-y: auto; overflow-x: hidden; height: 425px"
   >
     <form>
+      <div class="form-group">
       <div class="mx-auto" style="width: 200px;">
         <h5 class="modal-title">{{vm.tituloTelaEndereco}}</h5>
       </div>
+      <label for="cepPessoa">CEP</label>
+        <input
+        autofocus
+        type="text"
+        class="form-control"
+        id="cepPessoa"
+        ng-model="vm.endereco.cep"
+        ui-mask="99.999-999"
+        style="width: 120px;"
+        ng-blur = vm.consultaCEP(vm.endereco.cep)
+        
+      />
       <div class="form-group">
         <label for="enderecoPessoa">Logradouro: </label>
         <input
@@ -30,6 +43,8 @@
           id="enderecoPessoa"
           ng-model="vm.endereco.logradouro"
           placeholder="Digite o endereço ..."
+          disabled=""
+          
         />
       </div>
       <div class="form-group">
@@ -40,21 +55,21 @@
           id="complementoPessoa"
           ng-model="vm.endereco.complemento"
           placeholder="Complemento..."
+          required
         />
       </div>
       <div class="row">
         <div class="form-group">
           <label for="ufPessoa" style="width: 100px;"
-            >UF</label>
-         
-            <select
-              style="width: 150px; height: 38px; margin-right: 10px;"
-              class="form-control"
-              ng-options="item as item.id for item in vm.listaUF track by  vm.endereco.uf "
-              ng-model=" vm.endereco.uf"
-              id="ufPessoa">
-                <option value="" selected>-- UF --</option>
-            </select>
+            >UF</label>         
+            <input
+          type="text"
+          class="form-control"
+          id="ufPessoa"
+          ng-model="vm.endereco.uf"
+          placeholder="UF..."
+          disabled=""
+        />
           </div>
             <div class="form-group">
               <label for="cidadePessoa">Cidade</label>
@@ -65,19 +80,11 @@
                 id="cidadePessoa"
                 ng-model="vm.endereco.localidade"
                 placeholder="Cidade..."
+                disabled=""
               />
           </div>
         </div>
-          <div class="form-group">
-            <label for="cepPessoa">CEP</label>
-            <input
-            type="text"
-            class="form-control"
-            id="cepPessoa"
-            ng-model="vm.endereco.cep"
-            ui-mask="99.999-999"
-            style="width: 120px;"
-          />
+         
           </div>
           <div class="form-group">
             <label for="bairroPessoa">Bairro</label>
@@ -87,78 +94,9 @@
               id="bairroPessoa"
               ng-model="vm.endereco.bairro"
               placeholder="Bairro..."
+              disabled=""
             />
-          </div>
-        
-        <!-- <div class="form-group">
-          <label for="nomePerfil">Perfil</label>
-          <div>
-            <select
-              style="width: 250px; height: 38px;"
-              ng-model="vm.perfil.id"
-              ng-options="item as item.nome for item in vm.listaPerfil  track by item.id" 
-            >
-              <option value="">-- PERFIL --</option>
-            </select>
-          </div>
-        </div>  -->
-      
-      <!-- <div>
-        <div style="text-align: right;">
-          <img
-            src="../../../app/imagens/bootstrap-icons/icons/document-richtext.svg"
-            style="cursor: pointer;"
-            alt=""
-            width="25"
-            height="25"
-            title="Incluir Endereço"
-            ng-click="vm.abrirModal()"
-          />
-        </div>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Cidade</th>
-              <th scope="col">UF</th>
-              <th scope="col">Logradouro</th>
-              <th scope="col">Editar</th>
-              <th scope="col">Excluir</th>
-            </tr>
-          </thead>
-          <tbody ng-repeat="endereco in vm.pessoa.enderecos">
-            <tr>
-              <td>{{endereco.localidade}}</td>
-              <td>{{endereco.uf}}</td>
-              <td>{{endereco.logradouro}}</td>
-              <td>
-                <img
-                  ng-class="{'disabledDiv': endereco.complemento.length === 0}"
-                  src="../../../app/imagens/bootstrap-icons/icons/pencil.svg"
-                  style="cursor: pointer;"
-                  alt=""
-                  width="25"
-                  height="25"
-                  title="Editar"
-                  ng-click="vm.abrirModal(endereco)"
-                />
-              </td>
-
-              <td>
-                <img
-                  ng-class="{'disabledDiv': endereco.id === null}"
-                  src="../../../app/imagens/bootstrap-icons/icons/trash.svg"
-                  style="cursor: pointer;"
-                  alt=""
-                  width="25"
-                  height="25"
-                  title="Excluir"
-                  ng-click="vm.remover(endereco, 'ENDERECO')"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
+          </div>       
     </form>
   </div>
   <div

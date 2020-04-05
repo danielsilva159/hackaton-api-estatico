@@ -22,8 +22,23 @@
       <div class="mx-auto" style="width: 200px;">
         <h5 class="modal-title">{{vm.tituloTela}}</h5>
       </div>
+      <div class="form-group" ng-model = "vm.pessoa.imagem">
+        <img src="http://localhost:8300/app/imagens/imagemPerfil/imagemDefault.png" 
+        ng-model = "vm.pessoa.imagem" 
+                 class="form-group"
+                 
+
+        />
+        <input
+                  type="file"
+                  class="glyphicon glyphicon-pencil"
+                  (change) = "vm.imagemPessoa($event)"
+                  
+                />
+        <a href=></a>
+      </div><!--fechamento div imagem-->
       <div class="form-group">
-        <label for="nomePessoa">Nome: </label>
+        <label for="nomePessoa">Nome </label>
         <input
           type="nome"
           class="form-control"
@@ -55,20 +70,23 @@
             ui-mask="99/99/9999"
             style="width: 120px;"
           />
+          
         </div>
-        <!-- <div class="form-group">
+         <div class="form-group">
           <label for="nomePerfil">Perfil</label>
           <div>
             <select
               style="width: 250px; height: 38px;"
               ng-class="{'disabledDiv': vm.listaPerfil.length === 0, 'custom-select custom-select-sm': true}"
-              ng-options="item as item.nome for item in vm.listaPerfil track by item.idPessoa"
-              ng-model="vm.perfil"
+              ng-options="item as item.nome for item in vm.listaPerfil track by item.id"
+              ng-model="vm.idperfil"
+           
             >
               <option value="">-- PERFIL --</option>
             </select>
+            <div id="idPerfilTela"></div>
           </div>
-        </div> -->
+        </div>      
       </div>
 
       <div class="form-check">
@@ -83,6 +101,7 @@
           Situação
         </label>
       </div>
+    
       <div ng-if="vm.pessoa.id!==null">
         <div style="text-align: right;">
           <img
@@ -132,6 +151,7 @@
                   width="25"
                   height="25"
                   title="Excluir"
+                  ng-confirm-click="Deseja deletar esse endereço?"
                   ng-click="vm.remover(endereco, 'ENDERECO')"
                 />
               </td>
@@ -157,15 +177,15 @@
     </button>
   </div>
 
-  <div
+  <!-- <div
     class="modal fade"
     id="modalEndereco"
     role="dialog"
     data-backdrop="false"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog"> -->
       <!-- Modal content-->
-      <div class="modal-content">
+      <!-- <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
             &times;
@@ -178,5 +198,5 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 </div>

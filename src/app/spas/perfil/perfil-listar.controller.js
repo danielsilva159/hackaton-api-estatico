@@ -51,6 +51,15 @@ function PerfilListarController($rootScope, $scope, $location,
 
         return dia +"/"+ mes +"/"+ ano;
     };
+    vm.remover = function (id) {
 
+        var liberaExclusao = window.confirm("Deseja excluir esse perfil?");
+        if (liberaExclusao)
+            HackatonStefaniniService.excluir(vm.urlPerfil + id).then(
+                function (response) {
+                        vm.init();
+                      }
+            );
+    }
 
 }

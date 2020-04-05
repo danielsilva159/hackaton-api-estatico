@@ -32,6 +32,7 @@
               height="25"
               title="Editar"
               ng-click="vm.editar(pessoa.id)"
+              
             />
           </td>
 
@@ -43,6 +44,8 @@
               width="25"
               height="25"
               title="Excluir"
+              data-toggle="modal" 
+              data-target="#modalEndereco"
               ng-click="vm.remover(pessoa.id)"
             />
           </td>
@@ -70,4 +73,48 @@
       </li>
     </ul>
   </nav>
+ <!-- Modal -->
+ <div
+    class="modal fade"
+    id="modalEndereco"
+    role="dialog"
+    data-backdrop="false"
+    data-toggle="modal"
+  >
+    <div class="modal-dialog">
+      Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div
+            
+          >
+            <span>Deseja Fazer a exclusão dessa pessoa?</span>
+        </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary btn-space"
+            data-dismiss="modal"
+            ng-click="vm.remover(pessoa.id)"
+          >
+            Sim
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-dismiss="modal"
+          >
+            Não
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -19,18 +19,10 @@ function EnderecoIncluirAlterarController(
 
     /**ATRIBUTOS DA TELA */
     vm = this;
-    vm.enderecoDefault = {
-        id: null,
-        idPessoa: null,
-        cep: "",
-        uf: "",
-        localidade: "",
-        bairro: "",
-        logradouro: "",
-        complemento: ""
-    };
-
+    
+   
     vm.urlEndereco = "http://localhost:8080/treinamento/api/enderecos/";
+    vm.urlEnderecoCep = "http://localhost:8080/treinamento/api/enderecos/cep/";
     vm.urlPessoa = "http://localhost:8080/treinamento/api/pessoas/";
 
     /**METODOS DE INICIALIZACAO */
@@ -51,7 +43,7 @@ function EnderecoIncluirAlterarController(
                                 if(enderecoRetorno.id!== null){
                                     vm.endereco = enderecoRetorno;
                                 }else{
-                                    enderecoRetorno.idPessoa = $routeParams.idEndereco;
+                                    enderecoRetorno.idPessoa = $routeParams.idPessoa;
                                     vm.endereco = enderecoRetorno;
                                 }
                             }  
@@ -77,7 +69,9 @@ function EnderecoIncluirAlterarController(
     };
 
     vm.incluir = function (endereco) {
-
+        if(vm.endereco.complemento == ""){
+            vm.endereco.complemento = "Sem Complemento";
+        } 
         var objetoDados = angular.copy(endereco);
         if (vm.acao == "Cadastrar Endereco") {
 
@@ -173,7 +167,25 @@ function EnderecoIncluirAlterarController(
         );
         return deferred.promise;
     }
-
+    vm.consultaCEP = function(cep){
+        vm.recuperarObjetoPorIDURL(cep, vm.urlEnderecoCep).then(
+            function (response) {
+                if (response.cep){
+                  vm.endereco.bairro = response.bairro;
+                   vm.endereco.cep = response.cep;
+                   vm.endereco.logradouro = response.logradouro;
+                   vm.endereco.complemento = response.complemento;
+                   vm.endereco.uf = response.uf;
+                  vm.endereco.localidade = response.localidade;
+                  if(!vm.endereco.idPessoa){vm.endereco.idPessoa = $routeParams.idPessoa;}
+                }else{
+                    alert("Esse CEP não existe");
+                    vm.endereco.cep = null; 
+                    focus(vm.endereco.cep);
+                }
+            }
+        )}
+       //endereco = $location.path(vm.urlEndereco+"cep/"+cep);
 
     vm.listaUF = [
         { "id": "RO", "desc": "RO" },

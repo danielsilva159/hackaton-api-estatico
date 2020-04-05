@@ -39,7 +39,7 @@
 
             // Rota para Endereço
 
-            .when('/cadastrarEndereco', {
+            .when('/cadastrarEndereco/:idPessoa', {
                 templateUrl: 'app/spas/endereco/template/endereco-incluir-alterar.tpl.html',
                 controller: 'EnderecoIncluirAlterarController as vm'
             })
