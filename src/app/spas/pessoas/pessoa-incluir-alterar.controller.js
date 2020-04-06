@@ -56,7 +56,6 @@ function PessoaIncluirAlterarController(
         /**Recuperar a lista de perfil */
         vm.listar(vm.urlPerfil).then(
             function (response) {
-                console.log('escop->'+$scope.$location);
                 if (response !== undefined) {
                     vm.listaPerfil = response;
                     if ($routeParams.idPessoa) {
@@ -69,8 +68,7 @@ function PessoaIncluirAlterarController(
                                     vm.pessoa = pessoaRetorno;
                                     vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
                                     vm.pessoa.enderecos = vm.consultaEnderecos(pessoaRetorno.id);
-                                    vm.perfil = vm.pessoa.perfil;
-                                    alert(vm.perfil);
+                                    vm.perfil = vm.pessoa.perfils;
                                    
                                 }
                             }
@@ -87,10 +85,11 @@ function PessoaIncluirAlterarController(
     };
 
     vm.retornarTelaListagem = function () {
-       if(pessoa.id){
-        vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
+       if(vm.pessoa.id){
+        vm.pessoa.dataNascimento = vm.formataDataTela(vm.pessoa.dataNascimento);
         $location.path("EditarPessoas/"+pessoa.id);
        }else{
+        vm.pessoa.dataNascimento = vm.formataDataTela(vm.pessoa.dataNascimento);
         $location.path("EditarPessoas/");
        }
         
@@ -126,7 +125,6 @@ function PessoaIncluirAlterarController(
     };
 
     vm.incluir = function () {
-        console.log(vm.pessoa.dataNascimento);
         vm.pessoa.dataNascimento = vm.formataDataJava(vm.pessoa.dataNascimento);
 
         var objetoDados = angular.copy(vm.pessoa);
@@ -283,6 +281,4 @@ function PessoaIncluirAlterarController(
             console.log(imagem);
         
     }
-
-
-}
+    }
